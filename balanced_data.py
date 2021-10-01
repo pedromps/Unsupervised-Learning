@@ -6,7 +6,7 @@ from tensorflow.keras import Sequential
 from tensorflow.keras.layers import Dense
 from sklearn.preprocessing import normalize
 from sklearn.svm import SVC
-from sklearn.metrics import confusion_matrix, balanced_accuracy_score, accuracy_score
+from sklearn.metrics import confusion_matrix, accuracy_score
 from sklearn.tree import DecisionTreeClassifier 
 from sklearn.linear_model import LogisticRegression
 
@@ -16,16 +16,11 @@ y_train1 = np.load("dataset1_ytrain.npy")
 x_test1 = np.load("dataset1_xtest.npy")
 y_test1 = np.load("dataset1_ytest.npy")
 
-x_train2 = np.load("dataset2_xtrain.npy")
-y_train2 = np.load("dataset2_ytrain.npy")
-x_test2 = np.load("dataset2_xtest.npy")
-y_test2 = np.load("dataset2_ytest.npy")
-
 x_train1 = normalize(x_train1, axis = 1)
 x_test1 = normalize(x_test1, axis = 1)
 
 # There's no hints about the datasets. It is just known that it is a classification problem!
-# the first dataset is balanced while the second one is not
+# this dataset is BALANCED
 # Neural Network (a simple MLP)
 ES = EarlyStopping(patience = 30, restore_best_weights=True)
 nn_clf = Sequential()
@@ -42,8 +37,7 @@ plt.plot(history.history['val_loss'])
 plt.grid()
 plt.show()
 
-
-print("\n\n\n\nLogistic Regression:")
+print("\n\n\n\nMLP:")
 print("Training Accuracy of the model = {:.2f}".format(accuracy_score(y_train1, nn_clf.predict_classes(x_train1))))
 print("Confusion Matrix = \n", confusion_matrix(y_train1, nn_clf.predict_classes(x_train1)))
 print("Testing Accuracy of the model = {:.2f}".format(accuracy_score(y_test1, nn_clf.predict_classes(x_test1))))
