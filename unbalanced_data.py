@@ -21,7 +21,9 @@ x_test2 = normalize(x_test2, axis = 1)
 
 # There's no hints about the datasets. It is just known that it is a classification problem!
 # this dataset is UNBALANCED
-weights = compute_class_weight('balanced', np.unique(y_train2), y_train2)
+weights = dict(enumerate(compute_class_weight('balanced', 
+                                              classes = np.unique(y_train2), 
+                                              y = np.reshape(y_train2, (y_train2.shape[0], )))))
 
 
 # Neural Network (a simple MLP)
@@ -32,7 +34,7 @@ nn_clf.add(Dense(32, activation = 'relu'))
 nn_clf.add(Dense(1, activation = 'sigmoid'))
 nn_clf.compile(optimizer = "Adam", loss = "binary_crossentropy", metrics = ["acc"])
 nn_clf.summary()
-history = nn_clf.fit(x_train2, y_train2, batch_size = 128, epochs = 2000, validation_split = 0.2, callbacks = ES, verbose = 0)
+history = nn_clf.fit(x_train2, y_train2, batch_size = 128, epochs = 3000, validation_split = 0.3, callbacks = ES, verbose = 1, class_weight = weights)
 
 plt.figure()
 plt.plot(history.history['loss'])
@@ -47,7 +49,7 @@ print("Testing Accuracy of the model = {:.2f}".format(balanced_accuracy_score(y_
 print("Confusion Matrix = \n", confusion_matrix(y_test2, nn_clf.predict_classes(x_test2)))
 
 # SVM with linear kernel and a harder margin formulation (best performance so far)
-svm_clf = SVC(kernel = 'linear', C = 100, gamma = 'auto')
+svm_clf = SVC(kernel = 'linear', C = 100, gamma = 'auto', class_weight = weights)
 svm_clf.fit(x_train2, y_train2.ravel())
 print("\n\n\n\nSVM:")
 print("Training Accuracy of the model = {:.2f}".format(svm_clf.score(x_train2, y_train2)))
@@ -56,7 +58,7 @@ print("Testing Accuracy of the model = {:.2f}".format(svm_clf.score(x_test2, y_t
 print("Confusion Matrix = \n", confusion_matrix(y_test2, svm_clf.predict(x_test2)))
 
 # Decision tree, with pruning to try and generalise best (no node can have less than 10 instances)
-tree_clf = DecisionTreeClassifier(random_state = 0, min_samples_leaf = 10)
+tree_clf = DecisionTreeClassifier(random_state = 0, min_samples_leaf = 10, class_weight = weights)
 tree_clf.fit(x_train2, y_train2)
 print("\n\n\n\nDecision Tree:")
 print("Training Accuracy of the model = {:.2f}".format(tree_clf.score(x_train2, y_train2)))
@@ -65,14 +67,10 @@ print("Testing Accuracy of the model = {:.2f}".format(tree_clf.score(x_test2, y_
 print("Confusion Matrix = \n", confusion_matrix(y_test2, tree_clf.predict(x_test2)))
 
 # Regressions
-reg_clf = LogisticRegression(penalty = 'l2', C = 10)
+reg_clf = LogisticRegression(penalty = 'l2', C = 100, class_weight = weights)
 reg_clf.fit(x_train2, y_train2.ravel())
 print("\n\n\n\nLogistic Regression:")
 print("Training Accuracy of the model = {:.2f}".format(reg_clf.score(x_train2, y_train2)))
 print("Confusion Matrix = \n", confusion_matrix(y_train2, reg_clf.predict(x_train2)))
 print("Testing Accuracy of the model = {:.2f}".format(reg_clf.score(x_test2, y_test2)))
 print("Confusion Matrix = \n", confusion_matrix(y_test2, reg_clf.predict(x_test2)))
-
-
-
-# now for the unbalanced dataset
