@@ -34,7 +34,7 @@ nn_clf.add(Dense(32, activation = 'relu'))
 nn_clf.add(Dense(1, activation = 'sigmoid'))
 nn_clf.compile(optimizer = "Adam", loss = "binary_crossentropy", metrics = ["acc"])
 nn_clf.summary()
-history = nn_clf.fit(x_train2, y_train2, batch_size = 128, epochs = 3000, validation_split = 0.3, callbacks = ES, verbose = 1, class_weight = weights)
+history = nn_clf.fit(x_train2, y_train2, batch_size = 128, epochs = 3000, validation_split = 0.1, callbacks = ES, verbose = 1, class_weight = weights)
 
 plt.figure()
 plt.plot(history.history['loss'])
