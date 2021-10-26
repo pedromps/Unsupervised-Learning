@@ -20,7 +20,7 @@ The test results for the balanced data (just accuracies present here in this tab
 And for the unbalanced data: 
 
 
-| ML Method | Accuracy (%) |
+| ML Method | Balanced Accuracy (%) |
 | --------- | -----------  |
 | MLP | 80 |
 | SVM  | 83 |
