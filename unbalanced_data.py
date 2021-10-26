@@ -27,7 +27,7 @@ weights = dict(enumerate(compute_class_weight('balanced',
 
 
 # Neural Network (a simple MLP)
-ES = EarlyStopping(patience = 50, restore_best_weights=True)
+ES = EarlyStopping(patience = 50, restore_best_weights = True)
 nn_clf = Sequential()
 nn_clf.add(Dense(128, activation = 'relu', input_shape = (x_train2.shape[1], )))
 nn_clf.add(Dense(32, activation = 'relu'))

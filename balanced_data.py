@@ -69,7 +69,3 @@ print("Training Accuracy of the model = {:.2f}".format(reg_clf.score(x_train1, y
 print("Confusion Matrix = \n", confusion_matrix(y_train1, reg_clf.predict(x_train1)))
 print("Testing Accuracy of the model = {:.2f}".format(reg_clf.score(x_test1, y_test1)))
 print("Confusion Matrix = \n", confusion_matrix(y_test1, reg_clf.predict(x_test1)))
-
-
-
-# now for the unbalanced dataset
